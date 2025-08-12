@@ -50,3 +50,28 @@ FROM
   posts_week_2024
 WHERE
   weeks BETWEEN '2024-01-01' AND '2024-12-31' AND total_claps >600;
+
+
+WITH claps_per_posts AS(
+	SELECT post_id, sum(counter) FROM claps
+	GROUP BY post_id
+), posts_from_2023 AS (
+	SELECT * FROM posts 
+	WHERE created_at BETWEEN '2023-01-01' AND '2023-12-31'
+)
+SELECT * FROM claps_per_posts
+WHERE claps_per_posts.post_id in (SELECT post_id FROM posts_from_2023);
+
+
+-- nombre de la tabla en memoria
+-- campos que vamos a tener
+WITH RECURSIVE countdown(val) AS (
+	--initialization => el primer nivel, o valores iniciales
+	-- 	VALUES(5)
+	select 5 as val
+	UNION ALL
+	-- Query recursivo
+	SELECT val - 1 FROM countdown WHERE val > 1
+)
+-- Select de los campos
+SELECT * FROM countdown;
