@@ -129,3 +129,18 @@ WITH RECURSIVE bosses AS (
 )
 SELECT *
 FROM bosses;
+
+--------
+WITH RECURSIVE bosses AS (
+	--init
+		SELECT id, name, reports_to, 1 AS depth FROM employees WHERE id = 1
+	UNION ALL
+	--Recursive
+		SELECT employees.id, employees.name, employees.reports_to, depth + 1 FROM employees
+		INNER JOIN bosses ON bosses.id = employees.reports_to
+		WHERE depth < 8
+)
+SELECT bosses.*, employees.name AS reports_to_name
+FROM bosses 
+LEFT JOIN employees on employees.id = bosses.reports_to
+ORDER BY bosses.depth ASC;
