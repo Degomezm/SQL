@@ -144,3 +144,19 @@ SELECT bosses.*, employees.name AS reports_to_name
 FROM bosses 
 LEFT JOIN employees on employees.id = bosses.reports_to
 ORDER BY bosses.depth ASC;
+
+
+SELECT
+  followers.*,
+  leader.name as leader,
+  follower.name as following
+FROM
+  followers
+  INNER JOIN "user" leader on followers.leader_id = leader.id
+  INNER JOIN "user" follower on followers.follower_id = follower.id;
+  
+  
+SELECT follower_id FROM followers WHERE leader_id = 1;
+
+SELECT * FROM followers
+WHERE leader_id in ( SELECT follower_id FROM followers WHERE leader_id = 1);
